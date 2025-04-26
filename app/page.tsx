@@ -6,12 +6,13 @@ export default function Home() {
           <h2 className="mb-2 tracking-[-.01em]">
             Welcome to Mega Events.
           </h2>
+          <p className="mt-4">
+            Your platform for planning and managing large-scale events.
+          </p>
         </main>
         <div className="flex gap-4 items-center flex-col sm:flex-row">
         </div>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-      </footer>
     </div>
   );
 }
