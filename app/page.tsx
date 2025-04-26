@@ -4,13 +4,9 @@ export default function Home() {
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
         <main className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
           <h2 className="mb-2 tracking-[-.01em]">
-            Welcome to
+            Welcome to Mega Events.
           </h2>
-          <h1 className="tracking-[-.01em]">
-            Mega Events
-          </h1>
         </main>
-
         <div className="flex gap-4 items-center flex-col sm:flex-row">
         </div>
       </main>
