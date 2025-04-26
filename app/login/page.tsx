@@ -21,8 +21,8 @@ export default function Login() {
       if (error) {
         setError(error.message);
       }
-    } catch (error: any) {
-      setError(error.message || 'An error occurred during sign in');
+    } catch (error: unknown) {
+      setError(error instanceof Error ? error.message : 'An error occurred during sign in');
     } finally {
       setIsLoading(false);
     }
