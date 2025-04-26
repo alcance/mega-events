@@ -42,8 +42,8 @@ export default function Register() {
         setPassword('');
         setConfirmPassword('');
       }
-    } catch (error: any) {
-      setError(error.message || 'An error occurred during registration');
+    } catch (error: unknown) {
+      setError(error instanceof Error ? error.message : 'An error occurred during registration');
     } finally {
       setIsLoading(false);
     }

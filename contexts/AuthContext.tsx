@@ -5,12 +5,16 @@ import { useRouter } from 'next/navigation';
 import { Session, User, SupabaseClient } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
 
+type AuthError = {
+  message: string;
+};
+
 type AuthContextType = {
   user: User | null;
   session: Session | null;
   isLoading: boolean;
-  signIn: (email: string, password: string) => Promise<{ error: any }>;
-  signUp: (email: string, password: string) => Promise<{ error: any }>;
+  signIn: (email: string, password: string) => Promise<{ error: AuthError | null }>;
+  signUp: (email: string, password: string) => Promise<{ error: AuthError | null }>;
   signOut: () => Promise<void>;
 };
 
@@ -81,9 +85,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         router.push('/dashboard');
       }
       return { error };
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Sign in error:', error);
-      return { error };
+      return { error: error instanceof Error ? { message: error.message } : { message: 'An unknown error occurred' } };
     }
   };
 
@@ -97,9 +101,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         },
       });
       return { error };
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Sign up error:', error);
-      return { error };
+      return { error: error instanceof Error ? { message: error.message } : { message: 'An unknown error occurred' } };
     }
   };
 
