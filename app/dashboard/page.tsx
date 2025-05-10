@@ -17,7 +17,7 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <ProtectedRoute>
+    // <ProtectedRoute>
       <div className="min-h-screen bg-gray-50">
         {/* Header */}
         <header className="bg-white shadow">
@@ -105,6 +105,6 @@ export default function Dashboard() {
           </div>
         </main>
       </div>
-    </ProtectedRoute>
+    // </ProtectedRoute>
   );
 }
