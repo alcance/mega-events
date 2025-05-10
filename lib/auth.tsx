@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { supabase } from './supabase';
 import { useRouter } from 'next/navigation';
-import type { Session, User, AuthError } from '@supabase/supabase-js';
+import type { Session, User, AuthError, AuthChangeEvent } from '@supabase/supabase-js';
 
 // Define UserMetadata interface
 interface UserMetadata {
@@ -61,12 +61,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     getInitialSession();
     
     try {
-      // Listen for auth changes
-      const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-        setSession(session);
-        setUser(session?.user as CustomUser || null);
-        setIsLoading(false);
-      });
+      // Listen for auth changes - Fixed type annotation for _event parameter
+      const { data: { subscription } } = supabase.auth.onAuthStateChange(
+        (_event: AuthChangeEvent, session: Session | null) => {
+          setSession(session);
+          setUser(session?.user as CustomUser || null);
+          setIsLoading(false);
+        }
+      );
 
       return () => {
         subscription.unsubscribe();
