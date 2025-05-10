@@ -5,7 +5,6 @@ import React, { useState, FormEvent, useEffect } from 'react';
 import { useAuth } from '@/lib/auth';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import type { AuthError } from '@supabase/supabase-js';
 
 export default function Register() {
   const [email, setEmail] = useState('');

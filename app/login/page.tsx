@@ -5,7 +5,6 @@ import React, { useState, FormEvent, useEffect } from 'react';
 import { useAuth } from '@/lib/auth';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import type { AuthError } from '@supabase/supabase-js';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -100,7 +99,7 @@ export default function Login() {
 
         <div className="mt-4 text-center">
           <p>
-            Don't have an account?{' '}
+            Don&apos;t have an account?{' '}
             <Link href="/register" className="text-blue-600 hover:text-blue-800">
               Register
             </Link>
