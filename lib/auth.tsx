@@ -40,30 +40,41 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     async function getInitialSession() {
       setIsLoading(true);
       
-      // Check active session
-      const { data, error } = await supabase.auth.getSession();
-      
-      if (error) {
-        console.error('Error getting session:', error);
+      try {
+        // Check active session
+        const { data, error } = await supabase.auth.getSession();
+        
+        if (error) {
+          console.error('Error getting session:', error);
+        }
+        
+        setSession(data.session);
+        setUser(data.session?.user as CustomUser || null);
+      } catch (err) {
+        console.error('Session retrieval error:', err);
+      } finally {
+        setIsLoading(false);
       }
-      
-      setSession(data.session);
-      setUser(data.session?.user as CustomUser || null);
-      setIsLoading(false);
     }
     
     getInitialSession();
     
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-      setUser(session?.user as CustomUser || null);
-      setIsLoading(false);
-    });
+    try {
+      // Listen for auth changes
+      const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+        setSession(session);
+        setUser(session?.user as CustomUser || null);
+        setIsLoading(false);
+      });
 
-    return () => {
-      subscription.unsubscribe();
-    };
+      return () => {
+        subscription.unsubscribe();
+      };
+    } catch (err) {
+      console.error('Auth state subscription error:', err);
+      setIsLoading(false);
+      return () => {}; // Return empty cleanup function
+    }
   }, []);
 
   // Sign up function
@@ -117,11 +128,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     signOut,
   };
 
-  // Return the provider (as plain JavaScript, not JSX)
-  return React.createElement(
-    AuthContext.Provider,
-    { value },
-    children
+  return (
+    <AuthContext.Provider value={value}>
+      {children}
+    </AuthContext.Provider>
   );
 }
 
@@ -136,7 +146,7 @@ export function useAuth() {
 
 // Protected route middleware (HOC)
 export function withAuth<P extends object>(Component: React.ComponentType<P>) {
-  const ProtectedRoute = (props: P) => {
+  function ProtectedRoute(props: P) {
     const { user, isLoading } = useAuth();
     const router = useRouter();
 
@@ -149,12 +159,12 @@ export function withAuth<P extends object>(Component: React.ComponentType<P>) {
 
     // Show loading state
     if (isLoading) {
-      return React.createElement('div', null, 'Loading...');
+      return <div>Loading...</div>;
     }
 
     // Render component if authenticated
-    return user ? React.createElement(Component, props) : null;
-  };
+    return user ? <Component {...props} /> : null;
+  }
 
   return ProtectedRoute;
 }

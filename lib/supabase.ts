@@ -1,4 +1,5 @@
 // lib/supabase.ts
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createClient } from '@supabase/supabase-js';
 
 // Ensure environment variables exist, using fallbacks for development
