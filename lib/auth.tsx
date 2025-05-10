@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { supabase } from './supabase';
 import { useRouter } from 'next/navigation';
-import type { Session, User, AuthError } from '@supabase/supabase-js';
+import type { Session, User, AuthError, AuthChangeEvent } from '@supabase/supabase-js';
 
 // Define UserMetadata interface
 interface UserMetadata {
@@ -36,6 +36,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
 
   useEffect(() => {
+    // Skip server-side execution by using useEffect
     // Function to get initial session
     async function getInitialSession() {
       setIsLoading(true);
@@ -51,7 +52,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setSession(data.session);
         setUser(data.session?.user as CustomUser || null);
       } catch (err) {
-        console.error('Session retrieval error:', err);
+        console.error('Failed to get session:', err);
       } finally {
         setIsLoading(false);
       }
@@ -60,20 +61,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     getInitialSession();
     
     try {
-      // Listen for auth changes
-      const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-        setSession(session);
-        setUser(session?.user as CustomUser || null);
-        setIsLoading(false);
-      });
+      // Listen for auth changes - Fixed type annotation for _event parameter
+      const { data: { subscription } } = supabase.auth.onAuthStateChange(
+        (_event: AuthChangeEvent, session: Session | null) => {
+          setSession(session);
+          setUser(session?.user as CustomUser || null);
+          setIsLoading(false);
+        }
+      );
 
       return () => {
         subscription.unsubscribe();
       };
     } catch (err) {
-      console.error('Auth state subscription error:', err);
+      console.error('Error setting up auth subscription:', err);
       setIsLoading(false);
-      return () => {}; // Return empty cleanup function
     }
   }, []);
 
@@ -114,8 +116,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // Sign out function
   const signOut = async () => {
-    await supabase.auth.signOut();
-    router.push('/login');
+    try {
+      await supabase.auth.signOut();
+      router.push('/login');
+    } catch (err) {
+      console.error('Error signing out:', err);
+    }
   };
 
   // Create auth context value
@@ -128,6 +134,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     signOut,
   };
 
+  // Return the provider
   return (
     <AuthContext.Provider value={value}>
       {children}
