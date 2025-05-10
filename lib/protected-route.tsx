@@ -19,8 +19,9 @@ export function withAuth<P extends object>(Component: React.ComponentType<P>) {
 
     // Show loading state
     if (isLoading) {
-      return <div>"Loading..."</div>;
+      return <div>Loading...</div>;
     }
+
 
     // Render component if authenticated
     return user ? <Component {...props} /> : null;
