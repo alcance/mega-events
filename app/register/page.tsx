@@ -1,151 +1,214 @@
 'use client';
 
-import React, { useState, FormEvent, useEffect } from 'react';
-// Import from auth.tsx not auth.ts
-import { useAuth } from '@/lib/auth';
+import React, { useState } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+import { supabase } from '@/lib/supabase';
 
-export default function Register() {
+export default function RegisterPage() {
+  const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [fullName, setFullName] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [ticketType, setTicketType] = useState('');
+  const [quantity, setQuantity] = useState(1); 
   const [isLoading, setIsLoading] = useState(false);
-  const [successMessage, setSuccessMessage] = useState('');
-  const { signUp, user } = useAuth();
+  const [errorMessage, setErrorMessage] = useState('');
+  
   const router = useRouter();
 
-  // Redirect if already logged in
-  useEffect(() => {
-    if (user) {
-      router.push('/');
-    }
-  }, [user, router]);
-
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setErrorMessage('');
-    setSuccessMessage('');
 
-    // Simple validation
-    if (password.length < 6) {
-      setErrorMessage('Password must be at least 6 characters');
+    // Validation
+    if (!fullName || !email || !password || !ticketType || quantity < 1) {
+      setErrorMessage('Please fill in all required fields');
       setIsLoading(false);
       return;
     }
 
+    if (password.length < 6) {
+      setErrorMessage('Password must be at least 6 characters long');
+      setIsLoading(false);
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setErrorMessage('Passwords do not match');
+      setIsLoading(false);
+      return;
+    }
+    
     try {
-      const { error } = await signUp(email, password, fullName);
+      // Register the user with Supabase auth
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            full_name: fullName,
+            ticket_type: ticketType,
+            ticket_quantity: quantity
+          }
+        }
+      });
+
       if (error) {
         setErrorMessage(error.message);
       } else {
-        setSuccessMessage(
-          'Registration successful! Please check your email to confirm your account.'
-        );
-        // You can automatically redirect or let the user click the login link
+        // Success - redirect to home
+        router.push('/');
       }
     } catch (error) {
-      const err = error as Error;
-      setErrorMessage(err.message || 'An error occurred during registration');
+      setErrorMessage('An unexpected error occurred');
+      console.error('Registration error:', error);
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center p-4 bg-gray-50">
-      <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
-        <div className="text-center">
-          <h1 className="text-3xl font-bold">Create an Account</h1>
-          <p className="mt-2 text-gray-600">Join Mega Events today</p>
-        </div>
+    <div className="flex h-screen bg-black text-white">
+      {/* Left side with the background image */}
+      <div className="hidden md:block md:w-1/2 relative">
+        <Image 
+          src="/general-background.svg" 
+          alt="Event Background" 
+          fill 
+          style={{objectFit: 'cover'}}
+          priority
+        />
+      </div>
 
-        {errorMessage && (
-          <div className="p-3 bg-red-100 text-red-700 rounded-md text-sm">
-            {errorMessage}
-          </div>
-        )}
-
-        {successMessage && (
-          <div className="p-3 bg-green-100 text-green-700 rounded-md text-sm">
-            {successMessage}
-            <div className="mt-2">
-              <Link href="/login" className="text-green-800 font-medium underline">
-                Go to login
-              </Link>
-            </div>
-          </div>
-        )}
-
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">
-              Full Name
-            </label>
-            <input
-              id="fullName"
-              name="fullName"
-              type="text"
-              required
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
-              className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+      {/* Right side with the form */}
+      <div className="w-full md:w-1/2 flex items-center justify-center p-4">
+        <div className="w-full max-w-md">
+          <div className="flex justify-center mb-6">
+            {/* Logo without the red circle background */}
+            <Image 
+              src="/main-logo.svg" 
+              alt="Logo" 
+              width={80} 
+              height={80}
             />
           </div>
 
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-              Email
-            </label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              autoComplete="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-              Password
-            </label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              autoComplete="new-password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            <p className="mt-1 text-xs text-gray-500">
-              Password must be at least 6 characters
-            </p>
-          </div>
-
-          <button
-            type="submit"
-            disabled={isLoading || !!successMessage}
-            className="w-full px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
-          >
-            {isLoading ? 'Registering...' : 'Register'}
-          </button>
-        </form>
-
-        <div className="mt-4 text-center">
-          <p>
-            Already have an account?{' '}
-            <Link href="/login" className="text-blue-600 hover:text-blue-800">
-              Sign in
-            </Link>
+          <h1 className="text-2xl font-bold text-center mb-2">Secure Your Spot</h1>
+          <p className="text-center text-gray-400 mb-6">
+            Fill in your details below to complete your registration.
           </p>
+
+          {errorMessage && (
+            <div className="mb-4 p-3 bg-red-900 text-red-100 rounded-md text-sm">
+              {errorMessage}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium mb-1">Full Name</label>
+              <input 
+                type="text" 
+                placeholder="Enter Full Name" 
+                className="w-full p-3 bg-gray-800 rounded-md border border-gray-700"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                required
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium mb-1">Email Address</label>
+              <input 
+                type="email" 
+                placeholder="Enter Email Address" 
+                className="w-full p-3 bg-gray-800 rounded-md border border-gray-700"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium mb-1">Password</label>
+              <input 
+                type="password" 
+                placeholder="Enter Password" 
+                className="w-full p-3 bg-gray-800 rounded-md border border-gray-700"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                minLength={6}
+              />
+              <p className="mt-1 text-xs text-gray-500">
+                Must be at least 6 characters
+              </p>
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium mb-1">Confirm Password</label>
+              <input 
+                type="password" 
+                placeholder="Confirm Password" 
+                className="w-full p-3 bg-gray-800 rounded-md border border-gray-700"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium mb-1">Ticket Type</label>
+              <div className="relative">
+                <select 
+                  className="w-full p-3 bg-gray-800 rounded-md border border-gray-700 appearance-none"
+                  value={ticketType}
+                  onChange={(e) => setTicketType(e.target.value)}
+                  required
+                >
+                  <option value="" disabled>Choose Ticket Type</option>
+                  <option value="standard">Standard</option>
+                  <option value="vip">VIP</option>
+                  <option value="premium">Premium</option>
+                </select>
+                <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                  <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+                  </svg>
+                </div>
+              </div>
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium mb-1">Quantity</label>
+              <div className="relative">
+                <input 
+                  type="number" 
+                  min="1"
+                  max="10" 
+                  className="w-full p-3 bg-gray-800 rounded-md border border-gray-700"
+                  value={quantity}
+                  onChange={(e) => setQuantity(parseInt(e.target.value) || 1)}
+                  required
+                />
+                <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                  <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+                  </svg>
+                </div>
+              </div>
+            </div>
+            
+            <button 
+              type="submit"
+              className="w-full p-3 mt-6 bg-red-500 text-white rounded-lg font-medium"
+              disabled={isLoading}
+            >
+              {isLoading ? 'PROCESSING...' : 'PROCEED TO PAYMENT'}
+            </button>
+          </form>
         </div>
       </div>
     </div>

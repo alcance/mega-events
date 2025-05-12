@@ -4,6 +4,8 @@ import { Session, User } from '@supabase/supabase-js';
 // User metadata type
 export interface UserMetadata {
   full_name?: string;
+  ticket_type?: string;
+  ticket_quantity?: number;
 }
 
 // Extended user type
@@ -24,4 +26,6 @@ export interface Profile {
   full_name: string | null;
   created_at: string;
   updated_at: string | null;
+  ticket_type: string | null;
+  ticket_quantity: number | null;
 }

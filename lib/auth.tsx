@@ -3,17 +3,8 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { supabase } from './supabase';
 import { useRouter } from 'next/navigation';
-import type { Session, User, AuthError, AuthChangeEvent } from '@supabase/supabase-js';
-
-// Define UserMetadata interface
-interface UserMetadata {
-  full_name?: string;
-}
-
-// Define custom User type that includes user_metadata
-interface CustomUser extends Omit<User, 'user_metadata'> {
-  user_metadata: UserMetadata;
-}
+import type { Session, AuthError, AuthChangeEvent } from '@supabase/supabase-js';
+import { UserMetadata, CustomUser } from './types';
 
 // Types for auth context
 interface AuthContextType {
@@ -61,7 +52,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     getInitialSession();
     
     try {
-      // Listen for auth changes - Fixed type annotation for _event parameter
+      // Listen for auth changes
       const { data: { subscription } } = supabase.auth.onAuthStateChange(
         (_event: AuthChangeEvent, session: Session | null) => {
           setSession(session);
@@ -149,29 +140,4 @@ export function useAuth() {
     throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
-}
-
-// Protected route middleware (HOC)
-export function withAuth<P extends object>(Component: React.ComponentType<P>) {
-  function ProtectedRoute(props: P) {
-    const { user, isLoading } = useAuth();
-    const router = useRouter();
-
-    // Effect for redirection
-    useEffect(() => {
-      if (!isLoading && !user) {
-        router.push('/login');
-      }
-    }, [user, isLoading, router]);
-
-    // Show loading state
-    if (isLoading) {
-      return <div>Loading...</div>;
-    }
-
-    // Render component if authenticated
-    return user ? <Component {...props} /> : null;
-  }
-
-  return ProtectedRoute;
 }
