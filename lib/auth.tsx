@@ -4,7 +4,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { supabase } from './supabase';
 import { useRouter } from 'next/navigation';
 import type { Session, AuthError, AuthChangeEvent } from '@supabase/supabase-js';
-import { UserMetadata, CustomUser } from './types';
+import { CustomUser } from './types';
 
 // Types for auth context
 interface AuthContextType {
