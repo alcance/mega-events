@@ -21,7 +21,7 @@ const PaymentMethodSelection = () => {
     setIsLoading(true);
     // Simulating payment processing
     setTimeout(() => {
-      router.push('/order-details');
+      router.push('/payment');
       setIsLoading(false);
     }, 2000);
   };
