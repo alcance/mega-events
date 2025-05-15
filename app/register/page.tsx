@@ -59,7 +59,7 @@ export default function RegisterPage() {
         setErrorMessage(error.message);
       } else {
         // Success - redirect to home
-        router.push('/');
+        router.push('/payment');
       }
     } catch (error) {
       setErrorMessage('An unexpected error occurred');
