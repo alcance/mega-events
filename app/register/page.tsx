@@ -70,7 +70,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="flex h-screen bg-black text-white">
+    <div className="flex h-screen bg-white text-black">
       {/* Left side with the background image */}
       <div className="hidden md:block md:w-1/2 relative">
         <Image 
@@ -96,12 +96,12 @@ export default function RegisterPage() {
           </div>
 
           <h1 className="text-2xl font-bold text-center mb-2">Secure Your Spot</h1>
-          <p className="text-center text-gray-400 mb-6">
+          <p className="text-center text-gray-600 mb-6">
             Fill in your details below to complete your registration.
           </p>
 
           {errorMessage && (
-            <div className="mb-4 p-3 bg-red-900 text-red-100 rounded-md text-sm">
+            <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-md text-sm">
               {errorMessage}
             </div>
           )}
@@ -112,7 +112,7 @@ export default function RegisterPage() {
               <input 
                 type="text" 
                 placeholder="Enter Full Name" 
-                className="w-full p-3 bg-gray-800 rounded-md border border-gray-700"
+                className="w-full p-3 bg-gray-50 rounded-md border border-gray-200"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 required
@@ -124,7 +124,7 @@ export default function RegisterPage() {
               <input 
                 type="email" 
                 placeholder="Enter Email Address" 
-                className="w-full p-3 bg-gray-800 rounded-md border border-gray-700"
+                className="w-full p-3 bg-gray-50 rounded-md border border-gray-200"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -136,7 +136,7 @@ export default function RegisterPage() {
               <input 
                 type="password" 
                 placeholder="Enter Password" 
-                className="w-full p-3 bg-gray-800 rounded-md border border-gray-700"
+                className="w-full p-3 bg-gray-50 rounded-md border border-gray-200"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -152,7 +152,7 @@ export default function RegisterPage() {
               <input 
                 type="password" 
                 placeholder="Confirm Password" 
-                className="w-full p-3 bg-gray-800 rounded-md border border-gray-700"
+                className="w-full p-3 bg-gray-50 rounded-md border border-gray-200"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
@@ -163,7 +163,7 @@ export default function RegisterPage() {
               <label className="block text-sm font-medium mb-1">Ticket Type</label>
               <div className="relative">
                 <select 
-                  className="w-full p-3 bg-gray-800 rounded-md border border-gray-700 appearance-none"
+                  className="w-full p-3 bg-gray-50 rounded-md border border-gray-200 appearance-none"
                   value={ticketType}
                   onChange={(e) => setTicketType(e.target.value)}
                   required
@@ -188,7 +188,7 @@ export default function RegisterPage() {
                   type="number" 
                   min="1"
                   max="10" 
-                  className="w-full p-3 bg-gray-800 rounded-md border border-gray-700"
+                  className="w-full p-3 bg-gray-50 rounded-md border border-gray-200"
                   value={quantity}
                   onChange={(e) => setQuantity(parseInt(e.target.value) || 1)}
                   required
@@ -203,7 +203,7 @@ export default function RegisterPage() {
             
             <button 
               type="submit"
-              className="w-full p-3 mt-6 bg-red-500 text-white rounded-lg font-medium"
+              className="w-full p-3 mt-6 bg-[#F94F4F] text-white rounded-lg font-medium hover:bg-red-600 transition-colors"
               disabled={isLoading}
             >
               {isLoading ? 'PROCESSING...' : 'PROCEED TO PAYMENT'}
