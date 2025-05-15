@@ -35,7 +35,7 @@ const OrderDetails = () => {
   };
 
   return (
-    <div className="flex h-screen bg-black text-white">
+    <div className="flex h-screen bg-white text-black">
       {/* Left side with the background image */}
       <div className="hidden md:block md:w-1/2 relative">
         <Image 
@@ -65,7 +65,7 @@ const OrderDetails = () => {
           <div className="mb-6">
             <h2 className="text-lg font-medium mb-4">Order Summary</h2>
             
-            <div className="bg-gray-800 bg-opacity-40 rounded-lg p-6 mb-6">
+            <div className="bg-gray-50 rounded-lg p-6 mb-6 border border-gray-200">
               {orderSummary.slice(0, 3).map((item, index) => (
                 <div 
                   key={index} 
@@ -73,19 +73,19 @@ const OrderDetails = () => {
                     index !== orderSummary.length - 1 ? '' : ''
                   }`}
                 >
-                  <span className="text-gray-400">{item.label}</span>
+                  <span className="text-gray-600">{item.label}</span>
                   <span className="font-medium">{item.value}</span>
                 </div>
               ))}
               
-              <div className="border-t border-gray-700 my-4"></div>
+              <div className="border-t border-gray-200 my-4"></div>
               
               {orderSummary.slice(3).map((item, index) => (
                 <div 
                   key={index + 3} 
                   className="flex justify-between py-2"
                 >
-                  <span className="text-gray-400">{item.label}</span>
+                  <span className="text-gray-600">{item.label}</span>
                   <span className="font-medium">{item.value}</span>
                 </div>
               ))}
@@ -101,7 +101,7 @@ const OrderDetails = () => {
             type="button"
             onClick={handlePayment}
             disabled={isLoading}
-            className="w-full p-3 mt-6 bg-red-500 text-white rounded-lg font-medium hover:bg-red-600 transition-colors disabled:opacity-75"
+            className="w-full p-3 mt-6 bg-[#F94F4F] text-white rounded-lg font-medium hover:bg-red-600 transition-colors disabled:opacity-75"
           >
             {isLoading ? 'PROCESSING...' : `PAY ${totalAmount}`}
           </button>
