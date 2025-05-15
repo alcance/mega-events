@@ -1,7 +1,8 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 type OrderSummaryItem = {
   label: string;
@@ -9,6 +10,9 @@ type OrderSummaryItem = {
 };
 
 const OrderDetails = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+  
   // Sample order data
   const orderSummary: OrderSummaryItem[] = [
     { label: 'Ticket Price', value: '$229' },
@@ -19,6 +23,16 @@ const OrderDetails = () => {
   ];
   
   const totalAmount = '$249';
+
+  const handlePayment = () => {
+    setIsLoading(true);
+    // Simulate payment processing delay
+    setTimeout(() => {
+      // Redirect to the confirmation page after payment
+      router.push('/confirmation');
+      setIsLoading(false);
+    }, 1500);
+  };
 
   return (
     <div className="flex h-screen bg-black text-white">
@@ -85,9 +99,11 @@ const OrderDetails = () => {
 
           <button 
             type="button"
-            className="w-full p-3 mt-6 bg-red-500 text-white rounded-lg font-medium hover:bg-red-600 transition-colors"
+            onClick={handlePayment}
+            disabled={isLoading}
+            className="w-full p-3 mt-6 bg-red-500 text-white rounded-lg font-medium hover:bg-red-600 transition-colors disabled:opacity-75"
           >
-            PAY {totalAmount}
+            {isLoading ? 'PROCESSING...' : `PAY ${totalAmount}`}
           </button>
         </div>
       </div>
