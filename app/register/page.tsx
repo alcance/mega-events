@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { supabase } from '@/lib/supabase';
 
 export default function RegisterPage() {
   const [fullName, setFullName] = useState('');
@@ -20,7 +19,7 @@ export default function RegisterPage() {
     setIsLoading(true);
     setErrorMessage('');
 
-    // Validation
+    // Basic validation
     if (!fullName || !email || !ticketType || quantity < 1) {
       setErrorMessage('Please fill in all required fields');
       setIsLoading(false);
@@ -28,33 +27,27 @@ export default function RegisterPage() {
     }
 
     try {
-      // Instead of registering with a password, we'll create a record
-      // or you can generate a random password here if needed
-      const randomPassword = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-      
-      // Register the user with Supabase auth using a random password
-      const { error } = await supabase.auth.signUp({
+      // Store user data in session storage - no passwords at all
+      const userData = {
+        fullName,
         email,
-        password: randomPassword, // Using a random password since we don't collect it
-        options: {
-          data: {
-            full_name: fullName,
-            ticket_type: ticketType,
-            ticket_quantity: quantity
-          }
-        }
-      });
-
-      if (error) {
-        setErrorMessage(error.message);
-      } else {
-        // Success - redirect to payment
-        router.push('/payment');
-      }
+        ticketType,
+        quantity
+      };
+      
+      // Save to session storage
+      sessionStorage.setItem('userData', JSON.stringify(userData));
+      
+      // Simulate a short delay for processing
+      setTimeout(() => {
+        // Redirect to payment page
+        router.push('/payout');
+        setIsLoading(false);
+      }, 1000);
+      
     } catch (error) {
       setErrorMessage('An unexpected error occurred');
       console.error('Registration error:', error);
-    } finally {
       setIsLoading(false);
     }
   };
@@ -76,7 +69,7 @@ export default function RegisterPage() {
       <div className="w-full md:w-1/2 flex items-center justify-center p-4">
         <div className="w-full max-w-md">
           <div className="flex justify-center mb-6">
-            {/* Logo without the red circle background */}
+            {/* Logo */}
             <Image 
               src="/main-logo.svg" 
               alt="Logo" 
@@ -155,11 +148,6 @@ export default function RegisterPage() {
                   onChange={(e) => setQuantity(parseInt(e.target.value) || 1)}
                   required
                 />
-                <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                  <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
-                  </svg>
-                </div>
               </div>
             </div>
             
