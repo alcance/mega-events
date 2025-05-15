@@ -47,7 +47,7 @@ const ConfirmationPage = () => {
             {/* More visible notification box */}
             <div className="bg-red-50 border border-[#F94F4F] text-black p-5 rounded-lg mb-8">
               <p className="font-medium">
-                We've Sent Your Ticket And Event Details To:
+                We&aposve Sent Your Ticket And Event Details To:
               </p>
               <p className="mt-1 font-bold text-lg">
                 [Your.Email@Example.Com]
