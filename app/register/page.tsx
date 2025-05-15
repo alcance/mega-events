@@ -3,13 +3,10 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { supabase } from '@/lib/supabase';
 
 export default function RegisterPage() {
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [ticketType, setTicketType] = useState('');
   const [quantity, setQuantity] = useState(1); 
   const [isLoading, setIsLoading] = useState(false);
@@ -22,49 +19,35 @@ export default function RegisterPage() {
     setIsLoading(true);
     setErrorMessage('');
 
-    // Validation
-    if (!fullName || !email || !password || !ticketType || quantity < 1) {
+    // Basic validation
+    if (!fullName || !email || !ticketType || quantity < 1) {
       setErrorMessage('Please fill in all required fields');
       setIsLoading(false);
       return;
     }
 
-    if (password.length < 6) {
-      setErrorMessage('Password must be at least 6 characters long');
-      setIsLoading(false);
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      setErrorMessage('Passwords do not match');
-      setIsLoading(false);
-      return;
-    }
-    
     try {
-      // Register the user with Supabase auth
-      const { error } = await supabase.auth.signUp({
+      // Store user data in session storage - no passwords at all
+      const userData = {
+        fullName,
         email,
-        password,
-        options: {
-          data: {
-            full_name: fullName,
-            ticket_type: ticketType,
-            ticket_quantity: quantity
-          }
-        }
-      });
-
-      if (error) {
-        setErrorMessage(error.message);
-      } else {
-        // Success - redirect to home
-        router.push('/payment');
-      }
+        ticketType,
+        quantity
+      };
+      
+      // Save to session storage
+      sessionStorage.setItem('userData', JSON.stringify(userData));
+      
+      // Simulate a short delay for processing
+      setTimeout(() => {
+        // Redirect to payment page
+        router.push('/payout');
+        setIsLoading(false);
+      }, 1000);
+      
     } catch (error) {
       setErrorMessage('An unexpected error occurred');
       console.error('Registration error:', error);
-    } finally {
       setIsLoading(false);
     }
   };
@@ -86,7 +69,7 @@ export default function RegisterPage() {
       <div className="w-full md:w-1/2 flex items-center justify-center p-4">
         <div className="w-full max-w-md">
           <div className="flex justify-center mb-6">
-            {/* Logo without the red circle background */}
+            {/* Logo */}
             <Image 
               src="/main-logo.svg" 
               alt="Logo" 
@@ -131,35 +114,7 @@ export default function RegisterPage() {
               />
             </div>
             
-            <div>
-              <label className="block text-sm font-medium mb-1">Password</label>
-              <input 
-                type="password" 
-                placeholder="Enter Password" 
-                className="w-full p-3 bg-gray-50 rounded-md border border-gray-200"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                minLength={6}
-              />
-              <p className="mt-1 text-xs text-gray-500">
-                Must be at least 6 characters
-              </p>
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium mb-1">Confirm Password</label>
-              <input 
-                type="password" 
-                placeholder="Confirm Password" 
-                className="w-full p-3 bg-gray-50 rounded-md border border-gray-200"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-              />
-            </div>
-            
-            <div>
+            <div
               <label className="block text-sm font-medium mb-1">Ticket Type</label>
               <div className="relative">
                 <select 
@@ -193,11 +148,6 @@ export default function RegisterPage() {
                   onChange={(e) => setQuantity(parseInt(e.target.value) || 1)}
                   required
                 />
-                <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                  <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
-                  </svg>
-                </div>
               </div>
             </div>
             
