@@ -8,8 +8,6 @@ import { supabase } from '@/lib/supabase';
 export default function RegisterPage() {
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [ticketType, setTicketType] = useState('');
   const [quantity, setQuantity] = useState(1); 
   const [isLoading, setIsLoading] = useState(false);
@@ -23,29 +21,21 @@ export default function RegisterPage() {
     setErrorMessage('');
 
     // Validation
-    if (!fullName || !email || !password || !ticketType || quantity < 1) {
+    if (!fullName || !email || !ticketType || quantity < 1) {
       setErrorMessage('Please fill in all required fields');
       setIsLoading(false);
       return;
     }
 
-    if (password.length < 6) {
-      setErrorMessage('Password must be at least 6 characters long');
-      setIsLoading(false);
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      setErrorMessage('Passwords do not match');
-      setIsLoading(false);
-      return;
-    }
-    
     try {
-      // Register the user with Supabase auth
+      // Instead of registering with a password, we'll create a record
+      // or you can generate a random password here if needed
+      const randomPassword = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+      
+      // Register the user with Supabase auth using a random password
       const { error } = await supabase.auth.signUp({
         email,
-        password,
+        password: randomPassword, // Using a random password since we don't collect it
         options: {
           data: {
             full_name: fullName,
@@ -58,7 +48,7 @@ export default function RegisterPage() {
       if (error) {
         setErrorMessage(error.message);
       } else {
-        // Success - redirect to home
+        // Success - redirect to payment
         router.push('/payment');
       }
     } catch (error) {
@@ -70,7 +60,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="flex h-screen bg-black text-white">
+    <div className="flex h-screen bg-white text-black">
       {/* Left side with the background image */}
       <div className="hidden md:block md:w-1/2 relative">
         <Image 
@@ -96,12 +86,12 @@ export default function RegisterPage() {
           </div>
 
           <h1 className="text-2xl font-bold text-center mb-2">Secure Your Spot</h1>
-          <p className="text-center text-gray-400 mb-6">
+          <p className="text-center text-gray-600 mb-6">
             Fill in your details below to complete your registration.
           </p>
 
           {errorMessage && (
-            <div className="mb-4 p-3 bg-red-900 text-red-100 rounded-md text-sm">
+            <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-md text-sm">
               {errorMessage}
             </div>
           )}
@@ -112,7 +102,7 @@ export default function RegisterPage() {
               <input 
                 type="text" 
                 placeholder="Enter Full Name" 
-                className="w-full p-3 bg-gray-800 rounded-md border border-gray-700"
+                className="w-full p-3 bg-gray-50 rounded-md border border-gray-200"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 required
@@ -124,37 +114,9 @@ export default function RegisterPage() {
               <input 
                 type="email" 
                 placeholder="Enter Email Address" 
-                className="w-full p-3 bg-gray-800 rounded-md border border-gray-700"
+                className="w-full p-3 bg-gray-50 rounded-md border border-gray-200"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium mb-1">Password</label>
-              <input 
-                type="password" 
-                placeholder="Enter Password" 
-                className="w-full p-3 bg-gray-800 rounded-md border border-gray-700"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                minLength={6}
-              />
-              <p className="mt-1 text-xs text-gray-500">
-                Must be at least 6 characters
-              </p>
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium mb-1">Confirm Password</label>
-              <input 
-                type="password" 
-                placeholder="Confirm Password" 
-                className="w-full p-3 bg-gray-800 rounded-md border border-gray-700"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
                 required
               />
             </div>
@@ -163,7 +125,7 @@ export default function RegisterPage() {
               <label className="block text-sm font-medium mb-1">Ticket Type</label>
               <div className="relative">
                 <select 
-                  className="w-full p-3 bg-gray-800 rounded-md border border-gray-700 appearance-none"
+                  className="w-full p-3 bg-gray-50 rounded-md border border-gray-200 appearance-none"
                   value={ticketType}
                   onChange={(e) => setTicketType(e.target.value)}
                   required
@@ -188,7 +150,7 @@ export default function RegisterPage() {
                   type="number" 
                   min="1"
                   max="10" 
-                  className="w-full p-3 bg-gray-800 rounded-md border border-gray-700"
+                  className="w-full p-3 bg-gray-50 rounded-md border border-gray-200"
                   value={quantity}
                   onChange={(e) => setQuantity(parseInt(e.target.value) || 1)}
                   required
@@ -203,7 +165,7 @@ export default function RegisterPage() {
             
             <button 
               type="submit"
-              className="w-full p-3 mt-6 bg-red-500 text-white rounded-lg font-medium"
+              className="w-full p-3 mt-6 bg-[#F94F4F] text-white rounded-lg font-medium hover:bg-red-600 transition-colors"
               disabled={isLoading}
             >
               {isLoading ? 'PROCESSING...' : 'PROCEED TO PAYMENT'}

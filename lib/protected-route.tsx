@@ -1,3 +1,5 @@
+// lib/protected-route.tsx
+
 'use client';
 
 import React, { useEffect } from 'react';
@@ -10,10 +12,10 @@ export function withAuth<P extends object>(Component: React.ComponentType<P>) {
     const { user, isLoading } = useAuth();
     const router = useRouter();
 
-    // Effect for redirection
+    // Effect for redirection - changed from /login to /register
     useEffect(() => {
       if (!isLoading && !user) {
-        router.push('/login');
+        router.push('/register');
       }
     }, [user, isLoading, router]);
 
@@ -21,7 +23,6 @@ export function withAuth<P extends object>(Component: React.ComponentType<P>) {
     if (isLoading) {
       return <div>Loading...</div>;
     }
-
 
     // Render component if authenticated
     return user ? <Component {...props} /> : null;

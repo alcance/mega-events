@@ -11,8 +11,7 @@ interface AuthContextType {
   user: CustomUser | null;
   session: Session | null;
   isLoading: boolean;
-  signUp: (email: string, password: string, fullName: string) => Promise<{ error: AuthError | null }>;
-  signIn: (email: string, password: string) => Promise<{ error: AuthError | null }>;
+  signUp: (email: string, fullName: string, ticketType: string, quantity: number) => Promise<{ error: AuthError | null }>;
   signOut: () => Promise<void>;
 }
 
@@ -70,17 +69,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  // Sign up function
-  const signUp = async (email: string, password: string, fullName: string) => {
+  // Sign up function - modified to not require password
+  const signUp = async (email: string, fullName: string, ticketType: string, quantity: number) => {
     try {
+      // Generate random password since we're not collecting it from users
+      const randomPassword = Math.random().toString(36).substring(2, 15) + 
+                            Math.random().toString(36).substring(2, 15);
+      
       const { error } = await supabase.auth.signUp({
         email,
-        password,
+        password: randomPassword,
         options: {
           data: {
             full_name: fullName,
-          },
-        },
+            ticket_type: ticketType,
+            ticket_quantity: quantity
+          }
+        }
       });
       
       return { error };
@@ -90,26 +95,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  // Sign in function
-  const signIn = async (email: string, password: string) => {
-    try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-      
-      return { error };
-    } catch (err) {
-      console.error('Sign in error:', err);
-      return { error: err as AuthError };
-    }
-  };
-
   // Sign out function
   const signOut = async () => {
     try {
       await supabase.auth.signOut();
-      router.push('/login');
+      router.push('/register');
     } catch (err) {
       console.error('Error signing out:', err);
     }
@@ -121,7 +111,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     session,
     isLoading,
     signUp,
-    signIn,
     signOut,
   };
 
