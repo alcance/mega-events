@@ -37,10 +37,8 @@ const Barcode: React.FC<BarcodeProps> = ({
     
     // For each character in the value
     for (let i = 0; i < value.length; i++) {
-      // Get the value of the digit (0-9)
-      const digit = parseInt(value[i], 10);
       
-      // The higher the digit, the thicker the bar
+      // The higher the digit value, the thicker the bar
       const barHeight = height - 20; // Leave some padding at top and bottom
       
       // Draw a bar with width proportional to the digit

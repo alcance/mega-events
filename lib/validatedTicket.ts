@@ -86,7 +86,7 @@ export const validateTicket = async (
       }
       
       // Also get the user's email for the full record
-      const { data: userData, error: userError } = await supabase.auth
+      const { data: userData } = await supabase.auth
         .admin.getUserById(data.id);
       
       return {
