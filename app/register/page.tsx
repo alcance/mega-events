@@ -4,12 +4,11 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
+import { generateBarcodeNumber } from '@/lib/barcode';
 
 export default function RegisterPage() {
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [ticketType, setTicketType] = useState('');
   const [quantity, setQuantity] = useState(1); 
   const [isLoading, setIsLoading] = useState(false);
@@ -23,42 +22,55 @@ export default function RegisterPage() {
     setErrorMessage('');
 
     // Validation
-    if (!fullName || !email || !password || !ticketType || quantity < 1) {
+    if (!fullName || !email || !ticketType || quantity < 1) {
       setErrorMessage('Please fill in all required fields');
-      setIsLoading(false);
-      return;
-    }
-
-    if (password.length < 6) {
-      setErrorMessage('Password must be at least 6 characters long');
-      setIsLoading(false);
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      setErrorMessage('Passwords do not match');
       setIsLoading(false);
       return;
     }
     
     try {
+      // Generate a unique barcode for the user
+      const barcode = generateBarcodeNumber();
+      
+      // Generate a random password since Supabase requires one
+      const randomPassword = Math.random().toString(36).substring(2, 15) + 
+                           Math.random().toString(36).substring(2, 15);
+      
       // Register the user with Supabase auth
-      const { error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email,
-        password,
+        password: randomPassword, // Use random password that user doesn't need to know
         options: {
           data: {
             full_name: fullName,
             ticket_type: ticketType,
-            ticket_quantity: quantity
+            ticket_quantity: quantity,
+            barcode: barcode // Include the barcode in user metadata
           }
         }
       });
 
       if (error) {
         setErrorMessage(error.message);
-      } else {
-        // Success - redirect to home
+      } else if (data?.user) {
+        // Create or update the profile with the barcode
+        const { error: profileError } = await supabase
+          .from('profiles')
+          .upsert({
+            id: data.user.id,
+            full_name: fullName,
+            username: email.split('@')[0], // Generate a simple username
+            ticket_type: ticketType,
+            ticket_quantity: quantity,
+            barcode: barcode,
+            updated_at: new Date().toISOString()
+          });
+          
+        if (profileError) {
+          console.error('Error updating profile:', profileError);
+        }
+        
+        // Success - redirect to payment page
         router.push('/payment');
       }
     } catch (error) {
@@ -127,34 +139,6 @@ export default function RegisterPage() {
                 className="w-full p-3 bg-gray-50 rounded-md border border-gray-200"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium mb-1">Password</label>
-              <input 
-                type="password" 
-                placeholder="Enter Password" 
-                className="w-full p-3 bg-gray-50 rounded-md border border-gray-200"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                minLength={6}
-              />
-              <p className="mt-1 text-xs text-gray-500">
-                Must be at least 6 characters
-              </p>
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium mb-1">Confirm Password</label>
-              <input 
-                type="password" 
-                placeholder="Confirm Password" 
-                className="w-full p-3 bg-gray-50 rounded-md border border-gray-200"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
                 required
               />
             </div>

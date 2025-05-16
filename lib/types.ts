@@ -19,7 +19,7 @@ export interface AuthSession {
   session: Session | null;
 }
 
-// Database profile type
+// Database profile type with barcode
 export interface Profile {
   id: string;
   username: string | null;
@@ -28,4 +28,26 @@ export interface Profile {
   updated_at: string | null;
   ticket_type: string | null;
   ticket_quantity: number | null;
+  barcode: string | null; // Added barcode field
+}
+
+// Event information type
+export interface EventInfo {
+  name: string;
+  date: string;
+  time: string;
+  location: string;
+  description: string;
+}
+
+// Ticket type
+export interface Ticket {
+  id: string;
+  user_id: string;
+  event_id: string;
+  barcode: string;
+  ticket_type: string;
+  created_at: string;
+  checked_in?: boolean;
+  check_in_time?: string;
 }
