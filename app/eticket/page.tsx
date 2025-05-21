@@ -49,84 +49,84 @@ export default function ETicketPage() {
       {/* Right side with the ticket */}
       <div className="w-full md:w-1/2 flex items-center justify-center p-4">
         <div className="w-full max-w-md">
-          <div className="flex justify-center mb-6">
+          <div className="flex justify-center mb-5">
             <Image 
               src="/main-logo.svg" 
               alt="Logo" 
-              width={80} 
-              height={80}
+              width={70} 
+              height={70}
             />
           </div>
 
           {/* Ticket content */}
           <div className="bg-white rounded-lg shadow-lg overflow-hidden">
             {/* Ticket Header */}
-            <div className="text-center p-4 border-b">
-              <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-2">
-                <svg className="w-6 h-6 text-[#F94F4F]" fill="currentColor" viewBox="0 0 20 20">
+            <div className="text-center p-3 border-b">
+              <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-1">
+                <svg className="w-5 h-5 text-[#F94F4F]" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M2 6a2 2 0 012-2h12a2 2 0 012 2v2a2 2 0 100 4v2a2 2 0 01-2 2H4a2 2 0 01-2-2v-2a2 2 0 100-4V6z"></path>
                 </svg>
               </div>
-              <h2 className="text-2xl font-bold">Your Ticket</h2>
+              <h2 className="text-xl font-bold">Your Ticket</h2>
             </div>
             
-            {/* Blue box instead of event image */}
-            <div className="p-6">
-              <div className="bg-blue-500 rounded-lg h-40 flex items-center justify-center">
-                <span className="text-white text-xl font-medium">Event Image</span>
+            {/* Blue box for event image - kept as requested */}
+            <div className="p-4">
+              <div className="bg-blue-500 rounded-lg h-32 flex items-center justify-center">
+                <span className="text-white text-lg font-medium">Event Image</span>
               </div>
             </div>
             
-            {/* Event information */}
-            <div className="p-6 bg-gray-50 border-t border-b border-gray-200">
-              <div className="mb-4">
-                <p className="text-sm text-gray-500">Tech Event</p>
-                <h3 className="text-xl font-bold">Future Front 2025</h3>
+            {/* Event information - More compact */}
+            <div className="p-4 bg-gray-50 border-t border-b border-gray-200">
+              <div className="mb-2">
+                <p className="text-xs text-gray-500">Tech Event</p>
+                <h3 className="text-lg font-bold">Future Front 2025</h3>
               </div>
               
-              <div className="grid grid-cols-2 gap-4 mb-4">
+              <div className="grid grid-cols-2 gap-3 text-sm">
                 <div>
-                  <p className="text-sm text-gray-500">Date</p>
+                  <p className="text-xs text-gray-500">Date</p>
                   <p className="font-medium">Jul 15, 2025</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Time</p>
+                  <p className="text-xs text-gray-500">Time</p>
                   <p className="font-medium">06:00 PM</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Check In Time</p>
+                  <p className="text-xs text-gray-500">Check In</p>
                   <p className="font-medium">05:45 PM</p>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500">Ticket ID</p>
-                  <p className="font-medium">34587214578</p>
+                  <p className="text-xs text-gray-500">Ticket ID</p>
+                  <p className="font-medium text-xs">{ticketData.ticketId}</p>
                 </div>
                 <div className="col-span-2">
-                  <p className="text-sm text-gray-500">Place</p>
+                  <p className="text-xs text-gray-500">Place</p>
                   <p className="font-medium">San Francisco, CA</p>
                 </div>
               </div>
             </div>
             
-            {/* Barcode section - keeping your existing barcode implementation unchanged */}
-            <div className="mt-6 p-4 bg-gray-50 rounded-lg mx-6">
-              <div className="barcode-container flex justify-center items-center bg-white p-4">
+            {/* Barcode section - Smaller */}
+            <div className="mt-4 p-3 bg-gray-50 rounded-lg mx-4">
+              <div className="barcode-container flex justify-center items-center bg-white p-3">
                 {ticketData.barcode && (
                   <svg
                     width="100%"
-                    height="100"
-                    viewBox="0 0 400 100"
+                    height="80"
+                    viewBox="0 0 360 80"
                     className="barcode"
                   >
                     {/* Background */}
-                    <rect x="0" y="0" width="400" height="100" fill="white" />
+                    <rect x="0" y="0" width="360" height="80" fill="white" />
                     
                     {/* Draw the barcode lines with varying widths and spacing */}
                     {Array.from({ length: 48 }).map((_, i) => {
-                      const x = 20 + i * 7.5;
+                      const x = 20 + i * 6.5;
                       const value = parseInt(ticketData.barcode[i % ticketData.barcode.length], 10);
-                      const width = 2 + (value % 3); // Vary width based on digit
-                      const height = 60 + (value % 15); // Vary height slightly
+                      const width = 1.5 + (value % 2.5);
+                      const height = 45 + (value % 12);
                       return (
                         <rect
                           key={i}
@@ -144,12 +144,12 @@ export default function ETicketPage() {
             </div>
             
             {/* Download button */}
-            <div className="p-6">
+            <div className="p-4">
               <button 
                 onClick={handleDownload}
-                className="w-full p-3 bg-[#F94F4F] text-white rounded-lg font-medium hover:bg-red-600 transition-colors"
+                className="w-full p-2.5 bg-[#F94F4F] text-white rounded-lg font-medium hover:bg-red-600 transition-colors"
               >
-                DOWNLOAD E - TICKET
+                DOWNLOAD E-TICKET
               </button>
             </div>
           </div>
