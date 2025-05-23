@@ -7,16 +7,14 @@ export function middleware(request: NextRequest) {
   // Get the pathname of the request
   const path = request.nextUrl.pathname;
 
-  // If someone tries to access /login, redirect them to /register
-  if (path === '/login') {
-    return NextResponse.redirect(new URL('/register', request.url));
-  }
+  // Allow login page to work normally
+  // Remove any redirects that were interfering with login
 
-  // Continue with the request for all other paths
+  // Continue with the request for all paths
   return NextResponse.next();
 }
 
-// Configure which paths this middleware will run on
+// Configure which paths this middleware will run on (optional now)
 export const config = {
-  matcher: ['/login'],
+  matcher: [],
 };

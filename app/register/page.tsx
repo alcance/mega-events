@@ -1,3 +1,4 @@
+// app/register/page.tsx
 'use client';
 
 import React, { useState } from 'react';
@@ -70,8 +71,8 @@ export default function RegisterPage() {
           console.error('Error updating profile:', profileError);
         }
         
-        // Success - redirect to payment page
-        router.push('/payment');
+        // Success - redirect to dashboard selection page
+        router.push('/dashboard-selection');
       }
     } catch (error) {
       setErrorMessage('An unexpected error occurred');
@@ -190,7 +191,7 @@ export default function RegisterPage() {
               className="w-full p-3 mt-6 bg-[#F94F4F] text-white rounded-lg font-medium hover:bg-red-600 transition-colors"
               disabled={isLoading}
             >
-              {isLoading ? 'PROCESSING...' : 'PROCEED TO PAYMENT'}
+              {isLoading ? 'PROCESSING...' : 'REGISTER & CONTINUE'}
             </button>
           </form>
         </div>
