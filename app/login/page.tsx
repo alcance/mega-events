@@ -123,7 +123,7 @@ export default function LoginPage() {
 
           <div className="mt-6 text-center">
             <p className="text-gray-600 text-sm">
-              Don't have an account?{' '}
+              Don&apos;t have an account?{' '}
               <button 
                 onClick={handleRegisterRedirect}
                 className="text-[#F94F4F] hover:text-red-600 font-medium"

@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 
 const Dashboard = () => {
-  const [selectedDateRange, setSelectedDateRange] = useState('14 Feb - 20 Feb');
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [sessionForm, setSessionForm] = useState({
@@ -463,7 +462,7 @@ const Dashboard = () => {
                   <div className="w-8 h-8 bg-gray-200 rounded-full flex-shrink-0"></div>
                   <div>
                     <p className="text-sm text-gray-900">
-                      Edited session time for <strong>"Neural Interfaces in Practice"</strong>
+                      Edited session time for <strong>&quot;Neural Interfaces in Practice&quot;</strong>
                     </p>
                     <p className="text-xs text-gray-500 mt-1">May 1, 2025</p>
                   </div>
