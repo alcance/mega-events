@@ -1,79 +1,107 @@
+// app/dashboard-selection/page.tsx
 'use client';
 
 import React from 'react';
-import { useAuth } from '@/lib/auth';
-import { withAuth } from '@/lib/protected-route';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { withAuth } from '@/lib/protected-route';
 
-function Home() {
-  const { user, signOut } = useAuth();
+const DashboardSelectionPage = () => {
+  const router = useRouter();
+
+  const dashboards = [
+    {
+      id: 1,
+      title: 'Speaker and Agenda Dashboard',
+      route: '/s&a-manager',
+      color: 'bg-blue-500 hover:bg-blue-600'
+    },
+    {
+      id: 2,
+      title: 'ATTENDEE CHECKIN',
+      route: '/attendee-checkin',
+      color: 'bg-green-500 hover:bg-green-600'
+    },
+    {
+      id: 3,
+      title: 'VIRTUAL AND HYBRIB EVENTS HOSTING',
+      route: '/virtual-host',
+      color: 'bg-purple-500 hover:bg-purple-600'
+    },
+    {
+      id: 4,
+      title: 'LEAD CAPTURE & CRM',
+      route: '/lead-manager',
+      color: 'bg-red-500 hover:bg-red-600'
+    },
+    {
+      id: 5,
+      title: 'REAL TIME POLLING< Q/A AND FEEDBACK ',
+      route: '/polling-manager',
+      color: 'bg-yellow-500 hover:bg-yellow-600'
+    },
+    {
+      id: 6,
+      title: 'Marketing Automation and Promotions',
+      route: '/marketing-manager',
+      color: 'bg-indigo-500 hover:bg-indigo-600'
+    },
+    {
+      id: 7,
+      title: 'Security & Role-Based Access Control',
+      route: '/security-manager',
+      color: 'bg-pink-500 hover:bg-pink-600'
+    }
+  ];
+
+  const handleDashboardClick = (route: string) => {
+    router.push(route);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-center items-center">
           <div className="flex items-center">
-            <div className="w-10 h-10 rounded-full bg-red-500 flex items-center justify-center mr-3">
+            <div className="w-12 h-12 rounded-full bg-red-500 flex items-center justify-center mr-3">
               <Image 
                 src="/main-logo.svg" 
                 alt="Logo" 
-                width={20} 
-                height={20}
+                width={24} 
+                height={24}
               />
             </div>
-            <h1 className="text-xl font-semibold">Mega Events</h1>
+            <h1 className="text-2xl font-semibold">Select Dashboard</h1>
           </div>
-          <button
-            onClick={signOut}
-            className="px-4 py-2 text-sm font-medium text-white bg-red-500 rounded-md hover:bg-red-600"
-          >
-            Sign Out
-          </button>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-          <h2 className="text-2xl font-bold mb-4">Registration Complete!</h2>
-          <p className="text-gray-600 mb-4">
-            Thank you for registering with Mega Events, {user?.user_metadata?.full_name || 'valued guest'}!
-          </p>
-          
-          <div className="bg-blue-50 rounded-lg p-6">
-            <h3 className="text-lg font-semibold mb-3">Your Ticket Information</h3>
-            <div className="space-y-2">
-              <p><span className="font-medium">Email:</span> {user?.email}</p>
-              <p><span className="font-medium">Name:</span> {user?.user_metadata?.full_name || 'Not provided'}</p>
-              <p><span className="font-medium">Ticket Type:</span> {user?.user_metadata?.ticket_type || 'Standard'}</p>
-              <p><span className="font-medium">Quantity:</span> {user?.user_metadata?.ticket_quantity || 1}</p>
-            </div>
-          </div>
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome!</h2>
+          <p className="text-gray-600">Choose a dashboard to get started</p>
         </div>
 
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-xl font-bold mb-4">Upcoming Events</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="border rounded-lg overflow-hidden">
-                <div className="h-48 bg-gray-200 relative">
-                  {/* Placeholder for event image */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-gray-500">Event Image {i}</span>
-                  </div>
-                </div>
-                <div className="p-4">
-                  <h3 className="font-semibold mb-1">Sample Event {i}</h3>
-                  <p className="text-sm text-gray-600 mb-2">June {10 + i}, 2025</p>
-                  <p className="text-sm text-gray-500">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                </div>
-              </div>
-            ))}
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {dashboards.map((dashboard) => (
+            <button
+              key={dashboard.id}
+              onClick={() => handleDashboardClick(dashboard.route)}
+              className={`${dashboard.color} text-white p-6 rounded-lg shadow-lg transition-all duration-200 transform hover:scale-105 text-left`}
+            >
+              <h3 className="text-xl font-bold mb-2">{dashboard.title}</h3>
+            </button>
+          ))}
+        </div>
+
+        <div className="text-center mt-8">
+          <p className="text-gray-500 text-sm">
+            You can always return to this page to switch between dashboards
+          </p>
         </div>
       </main>
     </div>
   );
-}
+};
 
-// Wrap the Home component with the withAuth HOC to protect this route
-export default withAuth(Home);
+export default withAuth(DashboardSelectionPage);
