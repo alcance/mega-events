@@ -268,8 +268,8 @@ const PollingDashboard = () => {
               <div className="bg-gradient-to-r from-red-400 to-purple-600 p-4 rounded-lg text-white">
                 <div className="text-sm mb-2">Most Requested Improvements</div>
                 <div className="space-y-1">
-                  <div className="font-medium">"More real examples"</div>
-                  <div className="font-medium">"Shorter Q&A"</div>
+                  <div className="font-medium">&quot;More real examples&quot;</div>
+                  <div className="font-medium">&quot;Shorter Q&A&quot;</div>
                 </div>
               </div>
             </div>
@@ -326,7 +326,7 @@ const PollingDashboard = () => {
                     </td>
                   </tr>
                   <tr className="border-t hover:bg-gray-50">
-                    <td className="py-4 px-6 text-sm text-gray-900">What's your biggest challenge?</td>
+                    <td className="py-4 px-6 text-sm text-gray-900">What&lsquo;s your biggest challenge?</td>
                     <td className="py-4 px-6 text-sm text-gray-600">Word Cloud</td>
                     <td className="py-4 px-6">
                       <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
@@ -363,7 +363,7 @@ const PollingDashboard = () => {
                     </td>
                   </tr>
                   <tr className="border-t hover:bg-gray-50">
-                    <td className="py-4 px-6 text-sm text-gray-900">What's your biggest challenge?</td>
+                    <td className="py-4 px-6 text-sm text-gray-900">What&lsquo;s your biggest challenge?</td>
                     <td className="py-4 px-6 text-sm text-gray-600">Word Cloud</td>
                     <td className="py-4 px-6">
                       <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
@@ -400,7 +400,7 @@ const PollingDashboard = () => {
                     </td>
                   </tr>
                   <tr className="border-t hover:bg-gray-50">
-                    <td className="py-4 px-6 text-sm text-gray-900">What's your biggest challenge?</td>
+                    <td className="py-4 px-6 text-sm text-gray-900">What&lsquo;s your biggest challenge?</td>
                     <td className="py-4 px-6 text-sm text-gray-600">Word Cloud</td>
                     <td className="py-4 px-6">
                       <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
