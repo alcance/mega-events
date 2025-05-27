@@ -31,7 +31,7 @@ const DashboardSelectionPage = () => {
     {
       id: 4,
       title: 'LEAD CAPTURE & CRM',
-      route: '/lead-manager',
+      route: '/lead',
       color: 'bg-red-500 hover:bg-red-600'
     },
     {
