@@ -25,7 +25,7 @@ const DashboardSelectionPage = () => {
     {
       id: 3,
       title: 'VIRTUAL AND HYBRIB EVENTS HOSTING',
-      route: '/virtual-host',
+      route: '/virtual-hybrid-hosting',
       color: 'bg-purple-500 hover:bg-purple-600'
     },
     {
