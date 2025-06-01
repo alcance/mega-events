@@ -3,30 +3,9 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 import { withAuth } from '@/lib/protected-route';
 
 const DashboardSelectionPage = () => {
-  const router = useRouter();
-
-  const dashboards = [
-    {
-      id: 1,
-      title: 'Dashboards',
-      route: '/dashboards',
-      color: 'bg-blue-500 hover:bg-blue-600'
-    },
-    {
-      id: 2,
-      title: 'Booth',
-      route: '/booths',
-      color: 'bg-green-500 hover:bg-green-600'
-    },
-  ];
-
-  const handleDashboardClick = (route: string) => {
-    router.push(route);
-  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -48,18 +27,7 @@ const DashboardSelectionPage = () => {
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome!</h2>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {dashboards.map((dashboard) => (
-            <button
-              key={dashboard.id}
-              onClick={() => handleDashboardClick(dashboard.route)}
-              className={`${dashboard.color} text-white p-6 rounded-lg shadow-lg transition-all duration-200 transform hover:scale-105 text-left`}
-            >
-              <h3 className="text-xl font-bold mb-2">{dashboard.title}</h3>
-            </button>
-          ))}
+          <p className="text-gray-600">Coming soon...</p>
         </div>
 
         <div className="text-center mt-8">
