@@ -9,18 +9,9 @@ const CardPaymentPage = () => {
   const [cardNumber, setCardNumber] = useState('');
   const [expiryDate, setExpiryDate] = useState('');
   const [cvv, setCvv] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading] = useState(false);
   
   const router = useRouter();
-  
-  const handleSubmit = () => {
-    setIsLoading(true);
-    // Simulating payment processing
-    setTimeout(() => {
-      router.push('/order-details');
-      setIsLoading(false);
-    }, 2000);
-  };
 
   return (
     <div className="flex h-screen bg-white text-black">
@@ -112,7 +103,7 @@ const CardPaymentPage = () => {
             <button 
               type="button"
               className="w-full p-3 mt-6 bg-[#F94F4F] text-white rounded-lg font-medium hover:bg-red-600 transition-colors"
-              onClick={handleSubmit}
+              onClick={() => router.push("/order-details")}
               disabled={isLoading}
             >
               {isLoading ? 'PROCESSING...' : 'NEXT'}
