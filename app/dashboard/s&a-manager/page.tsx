@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 
 const Dashboard = () => {
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -140,62 +141,65 @@ const Dashboard = () => {
 
   return (
     <div className="flex h-screen bg-gray-50">
-      {/* Sidebar */}
-      <div className="w-64 bg-white shadow-sm border-r">
-        <div className="p-6">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
-              M
-            </div>
-            <span className="text-xl font-bold text-gray-900">WEKALA</span>
-          </div>
-        </div>
-        
-        <nav className="mt-6">
-          <div className="px-4 space-y-2">
-            <a href="#" className="flex items-center space-x-3 px-4 py-3 bg-blue-50 text-blue-600 rounded-lg">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-              </svg>
-              <span className="font-medium">Dashboard</span>
-            </a>
-            <a href="#" className="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-              <span>My Materials</span>
-            </a>
-            <a href="#" className="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-              <span>My Sessions</span>
-            </a>
-            <a href="#" className="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-              </svg>
-              <span>Reports & Insights</span>
-            </a>
-            <a href="#" className="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
-              <span>Settings</span>
-            </a>
-          </div>
-        </nav>
+{/* Sidebar */}
+<div className="w-64 bg-white shadow-sm border-r flex flex-col">
+  <div className="p-6">
+    <div className="flex items-center space-x-2">
+      <Image
+        src="/main-logo.svg"
+        alt="Logo"
+        width={56}
+        height={56}
+      />
+      <span className="text-xl font-bold text-gray-900">WEKALA</span>
+    </div>
+  </div>
+  
+  <nav className="flex-1 mt-6">
+    <div className="px-4 space-y-2">
+      <a href="#" className="flex items-center space-x-3 px-4 py-3 bg-blue-50 text-blue-600 rounded-lg">
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+        </svg>
+        <span className="font-medium">Dashboard</span>
+      </a>
+      <a href="#" className="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+        <span>My Materials</span>
+      </a>
+      <a href="#" className="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+        <span>My Sessions</span>
+      </a>
+      <a href="#" className="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+        </svg>
+        <span>Reports & Insights</span>
+      </a>
+      <a href="#" className="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg">
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+        <span>Settings</span>
+      </a>
+    </div>
+  </nav>
 
-        <div className="absolute bottom-6 left-4 right-4">
-          <button className="flex items-center space-x-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg w-full">
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-            </svg>
-            <span>Log Out</span>
-          </button>
-        </div>
-      </div>
+  <div className="p-4">
+    <button className="flex items-center space-x-3 px-4 py-3 text-white bg-blue-600 rounded-lg w-full hover:bg-blue-700">
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+      </svg>
+      <span>Log Out</span>
+    </button>
+  </div>
+</div>
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
@@ -203,7 +207,7 @@ const Dashboard = () => {
         <div className="bg-white border-b px-6 py-4 flex justify-between items-center">
           <div></div>
           <div className="flex items-center space-x-4">
-            <button 
+            <button
               onClick={handleCreateSession}
               className="bg-blue-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-600"
             >
@@ -278,7 +282,7 @@ const Dashboard = () => {
                         </svg>
                         <span>14 Feb - 20 Feb</span>
                       </div>
-                      <button 
+                      <button
                         onClick={handleUploadMaterial}
                         className="bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-600"
                       >
@@ -352,7 +356,7 @@ const Dashboard = () => {
                         </svg>
                         <span>14 Feb - 20 Feb</span>
                       </div>
-                      <button 
+                      <button
                         onClick={handleCreateSession}
                         className="bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-600"
                       >
@@ -384,11 +388,10 @@ const Dashboard = () => {
                           <td className="py-4 px-6 text-sm text-gray-600">{session.room}</td>
                           <td className="py-4 px-6 text-sm text-gray-600">{session.track}</td>
                           <td className="py-4 px-6">
-                            <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                              session.status === 'Confirmed' 
-                                ? 'bg-green-100 text-green-800' 
-                                : 'bg-blue-100 text-blue-800'
-                            }`}>
+                            <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${session.status === 'Confirmed'
+                              ? 'bg-green-100 text-green-800'
+                              : 'bg-blue-100 text-blue-800'
+                              }`}>
                               • {session.status}
                             </span>
                           </td>
@@ -423,7 +426,7 @@ const Dashboard = () => {
                   </div>
                   <h3 className="text-lg font-semibold mb-1">John D.</h3>
                   <p className="text-purple-200 text-sm mb-6">Head of AI Research</p>
-                  
+
                   <div className="space-y-3 w-full text-left">
                     <div className="flex items-center space-x-3">
                       <svg className="w-4 h-4 text-purple-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -445,7 +448,7 @@ const Dashboard = () => {
                       <span className="text-sm">432 Elm Street, Cityville</span>
                     </div>
                   </div>
-                  
+
                   <button className="w-full mt-6 bg-white bg-opacity-20 hover:bg-opacity-30 py-2 px-4 rounded-lg text-sm font-medium transition-all flex items-center justify-center space-x-2">
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
@@ -472,14 +475,14 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-      
+
       {/* Create Session Modal */}
       {showCreateModal && (
         <div className="fixed inset-0 bg-gray-500 bg-opacity-40 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-xl w-full max-w-3xl mx-4 max-h-[90vh] overflow-y-auto">
             <div className="p-8">
               <h2 className="text-xl font-semibold text-gray-900 mb-8">Create New Session</h2>
-              
+
               <form onSubmit={handleFormSubmit} className="space-y-6">
                 <div className="grid grid-cols-2 gap-8">
                   {/* Session Title */}
@@ -496,7 +499,7 @@ const Dashboard = () => {
                       required
                     />
                   </div>
-                  
+
                   {/* Track */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-3">
@@ -521,7 +524,7 @@ const Dashboard = () => {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="grid grid-cols-3 gap-6">
                   {/* Date */}
                   <div>
@@ -544,7 +547,7 @@ const Dashboard = () => {
                       </div>
                     </div>
                   </div>
-                  
+
                   {/* Time */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-3">
@@ -566,7 +569,7 @@ const Dashboard = () => {
                       </div>
                     </div>
                   </div>
-                  
+
                   {/* Room No */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-3">
@@ -582,7 +585,7 @@ const Dashboard = () => {
                     />
                   </div>
                 </div>
-                
+
                 {/* Upload */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-3">
@@ -603,7 +606,7 @@ const Dashboard = () => {
                     />
                   </div>
                 </div>
-                
+
                 {/* Session Description */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-3">
@@ -617,7 +620,7 @@ const Dashboard = () => {
                     className="w-full px-4 py-3 border-0 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none bg-gray-100 text-gray-700 placeholder-gray-500 resize-none"
                   />
                 </div>
-                
+
                 {/* Create Session Button */}
                 <div className="flex justify-end pt-6">
                   <button
@@ -629,7 +632,7 @@ const Dashboard = () => {
                 </div>
               </form>
             </div>
-            
+
             {/* Close button */}
             <button
               onClick={handleCloseModal}
@@ -649,7 +652,7 @@ const Dashboard = () => {
           <div className="bg-white rounded-lg shadow-xl w-full max-w-lg mx-4">
             <div className="p-8">
               <h2 className="text-xl font-semibold text-gray-900 mb-8">Upload Material</h2>
-              
+
               <form onSubmit={handleUploadSubmit} className="space-y-6">
                 {/* Upload Area */}
                 <div className="border-2 border-dashed border-blue-300 rounded-lg p-12 text-center bg-blue-50">
@@ -670,7 +673,7 @@ const Dashboard = () => {
                     className="cursor-pointer inline-block w-full h-full absolute inset-0"
                   ></label>
                 </div>
-                
+
                 {/* Upload Button */}
                 <div className="flex justify-end pt-4">
                   <button
@@ -682,7 +685,7 @@ const Dashboard = () => {
                 </div>
               </form>
             </div>
-            
+
             {/* Close button */}
             <button
               onClick={handleCloseModal}

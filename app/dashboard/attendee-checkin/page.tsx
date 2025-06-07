@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { withAuth } from '@/lib/protected-route';
+import Image from "next/image";
 
 const AttendeeCheckinDashboard = () => {
   const [selectedEvent, setSelectedEvent] = useState('TechExpo 2025');
@@ -37,12 +38,15 @@ const AttendeeCheckinDashboard = () => {
       {/* Sidebar */}
       <div className="w-64 bg-white shadow-sm border-r flex flex-col">
         <div className="p-6">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
-              M
-            </div>
-            <span className="text-xl font-bold text-gray-900">WEKALA</span>
-          </div>
+        <div className="flex items-center space-x-2">
+          <Image
+            src="/main-logo.svg"
+            alt="Logo"
+            width={56}
+            height={56}
+          />
+          <span className="text-xl font-bold text-gray-900">WEKALA</span>
+        </div>
         </div>
         
         <nav className="flex-1 mt-6">

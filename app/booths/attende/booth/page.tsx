@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from "next/image"
 
 const ExhibitorDashboard = () => {
   return (
@@ -8,11 +9,17 @@ const ExhibitorDashboard = () => {
         {/* Logo Section */}
         <div className="p-6 border-b">
           <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
-              M
-            </div>
-            <span className="text-xl font-bold text-gray-900">WEKALA</span>
-          </div>
+          <div className="flex items-center space-x-2">
+      <Image
+        src="/main-logo.svg"
+        alt="Logo"
+        width={56}
+        height={56}
+      />
+      <span className="text-xl font-bold text-gray-900">WEKALA</span>
+    </div>
+  </div>
+
         </div>
         
         {/* Navigation Menu */}
