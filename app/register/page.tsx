@@ -99,7 +99,7 @@ export default function RegisterPage() {
       <div className="w-full md:w-1/2 flex items-center justify-center p-4">
         <div className="w-full max-w-md">
           <div className="flex justify-center mb-6">
-            {/* Logo without the red circle background */}
+            {/* Logo */}
             <Image 
               src="/main-logo.svg" 
               alt="Logo" 
