@@ -17,14 +17,6 @@ const PaymentMethodSelection = () => {
     setSelectedMethod(method);
   };
   
-  const handleSubmit = () => {
-    setIsLoading(true);
-    // Simulating payment processing
-    setTimeout(() => {
-      router.push('/payout');
-      setIsLoading(false);
-    }, 500);
-  };
 
   return (
     <div className="flex h-screen bg-white text-black">
@@ -177,7 +169,7 @@ const PaymentMethodSelection = () => {
           <button 
             type="button"
             className="w-full p-3 mt-6 bg-[#F94F4F] text-white rounded-lg font-medium hover:bg-red-600 transition-colors"
-            onClick={handleSubmit}
+            onClick={() => router.push("/payout")}
             disabled={isLoading}
           >
             {isLoading ? 'PROCESSING...' : 'NEXT'}

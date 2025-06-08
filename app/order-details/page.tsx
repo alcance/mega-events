@@ -10,7 +10,7 @@ type OrderSummaryItem = {
 };
 
 const OrderDetails = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading] = useState(false);
   const router = useRouter();
   
   // Sample order data
@@ -24,15 +24,6 @@ const OrderDetails = () => {
   
   const totalAmount = '$249';
 
-  const handlePayment = () => {
-    setIsLoading(true);
-    // Simulate payment processing delay
-    setTimeout(() => {
-      // Redirect to the confirmation page after payment
-      router.push('/confirmation');
-      setIsLoading(false);
-    }, 1500);
-  };
 
   return (
     <div className="flex h-screen bg-white text-black">
@@ -99,7 +90,7 @@ const OrderDetails = () => {
 
           <button 
             type="button"
-            onClick={handlePayment}
+            onClick={() => router.push("/confirmation")}
             disabled={isLoading}
             className="w-full p-3 mt-6 bg-[#F94F4F] text-white rounded-lg font-medium hover:bg-red-600 transition-colors disabled:opacity-75"
           >
