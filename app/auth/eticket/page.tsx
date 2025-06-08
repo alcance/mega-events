@@ -2,7 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { generateBarcodeNumber } from '@/lib/barcode';
+
 
 export default function ETicketPage() {
   const [ticketData, setTicketData] = useState({
@@ -15,7 +17,9 @@ export default function ETicketPage() {
     place: 'San Francisco, CA',
     barcode: ''
   });
-  
+
+  const router = useRouter();
+
 
   useEffect(() => {
     // Generate a barcode when the component mounts
@@ -28,9 +32,12 @@ export default function ETicketPage() {
     }));
   }, []);
 
+  
   const handleDownload = () => {
     window.print();
     // In a real application, you might generate a PDF here
+
+    router.push("/")
   };
 
   return (
