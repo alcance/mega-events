@@ -9,7 +9,7 @@ type PaymentMethod = 'credit' | 'apple' | 'google' | 'paypal';
 
 const PaymentMethodSelection = () => {
   const [selectedMethod, setSelectedMethod] = useState<PaymentMethod>('credit');
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading] = useState<boolean>(false);
   
   const router = useRouter();
   

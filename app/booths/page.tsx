@@ -22,6 +22,12 @@ const DashboardSelectionPage = () => {
       route: '/booths/exhibitor/booth',
       color: 'bg-green-500 hover:bg-green-600'
     },
+    {
+      id: 3,
+      title: 'CREATE-BOOTH',
+      route: '/booths/create-booth',
+      color: 'bg-yellow-500 hover:bg-green-600'
+    },
 ]
 
   const handleDashboardClick = (route: string) => {

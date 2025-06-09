@@ -37,7 +37,7 @@ export default function LoginPage() {
         setErrorMessage(error.message);
       } else if (data?.user) {
         // Success - redirect to dashboard selection
-        router.push('/dashboard-selection');
+        router.push('/booths/create-booth');
       }
     } catch (error) {
       setErrorMessage('An unexpected error occurred');
