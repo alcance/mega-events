@@ -72,7 +72,7 @@ export default function RegisterPage() {
         }
         
         // Success - redirect to dashboard selection page
-        router.push('/dashboard-selection');
+        router.push('/');
       }
     } catch (error) {
       setErrorMessage('An unexpected error occurred');
