@@ -3,61 +3,6 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
-import { useAuth } from '@/lib/auth';
-import { useEffect } from 'react';
-
-const AuthDebugger = () => {
-  const { user, session, isLoading } = useAuth();
-  const [debugInfo, setDebugInfo] = useState<{
-    contextUser?: boolean;
-    contextSession?: boolean;
-    contextLoading?: boolean;
-    supabaseSession?: boolean;
-    supabaseUser?: boolean;
-    sessionError?: string;
-    userError?: string;
-    userId?: string;
-    accessToken?: string;
-    error?: string;
-  } | null>(null);
-
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        // Check session
-        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-        
-        // Check user
-        const { data: { user }, error: userError } = await supabase.auth.getUser();
-        
-        setDebugInfo({
-          contextUser: !!user,
-          contextSession: !!session,
-          contextLoading: isLoading,
-          supabaseSession: !!session,
-          supabaseUser: !!user,
-          sessionError: sessionError?.message,
-          userError: userError?.message,
-          userId: user?.id || session?.user?.id,
-          accessToken: session?.access_token ? 'present' : 'missing'
-        });
-      } catch (error) {
-        setDebugInfo({ error: error instanceof Error ? error.message : 'Unknown error' });
-      }
-    };
-
-    checkAuth();
-  }, [user, session, isLoading]);
-
-  if (!debugInfo) return <div>Loading debug info...</div>;
-
-  return (
-    <div className="fixed top-4 right-4 bg-black text-white p-4 rounded text-xs max-w-xs z-50">
-      <h3 className="font-bold mb-2">Auth Debug:</h3>
-      <pre>{JSON.stringify(debugInfo, null, 2)}</pre>
-    </div>
-  );
-};
 
 interface BoothFormData {
   // Package selection
@@ -497,7 +442,7 @@ const CreateBoothFlow = () => {
               placeholder="Enter Booth Name"
               value={formData.boothName}
               onChange={(e) => updateFormData({ boothName: e.target.value })}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-colors"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-colors text-gray-900"
             />
           </div>
 
@@ -563,7 +508,7 @@ const CreateBoothFlow = () => {
               value={formData.boothDescription}
               onChange={(e) => updateFormData({ boothDescription: e.target.value })}
               rows={6}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-colors resize-none"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-colors resize-none text-gray-900"
             />
           </div>
         </div>
@@ -640,7 +585,7 @@ const CreateBoothFlow = () => {
                   placeholder="Enter Contact Name"
                   value={formData.contactName}
                   onChange={(e) => updateFormData({ contactName: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-colors"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-colors text-gray-900"
                 />
               </div>
               <div>
@@ -652,7 +597,7 @@ const CreateBoothFlow = () => {
                   placeholder="Enter Email"
                   value={formData.email}
                   onChange={(e) => updateFormData({ email: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-colors"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-colors text-gray-900"
                 />
               </div>
             </div>
@@ -667,7 +612,7 @@ const CreateBoothFlow = () => {
                   placeholder="Enter Phone"
                   value={formData.phone}
                   onChange={(e) => updateFormData({ phone: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-colors"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-colors text-gray-900"
                 />
               </div>
               <div>
@@ -679,7 +624,7 @@ const CreateBoothFlow = () => {
                   placeholder="Enter Website URL"
                   value={formData.website}
                   onChange={(e) => updateFormData({ website: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-colors"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition-colors text-gray-900"
                 />
               </div>
             </div>
@@ -900,7 +845,7 @@ const CreateBoothFlow = () => {
 
   return (
     <div>
-      <AuthDebugger />
+
       {renderCurrentStep()}
     </div>
   );
