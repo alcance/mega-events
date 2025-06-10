@@ -13,7 +13,7 @@ const DashboardSelectionPage = () => {
     {
       id: 1,
       title: 'Dashboards',
-      route: '/dashboard',
+      route: '/dashboard/s-a-manager',
       color: 'bg-blue-500 hover:bg-blue-600'
     },
     {

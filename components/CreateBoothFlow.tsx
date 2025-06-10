@@ -900,7 +900,6 @@ const CreateBoothFlow = () => {
 
   return (
     <div>
-      <AuthDebugger />
       {renderCurrentStep()}
     </div>
   );
