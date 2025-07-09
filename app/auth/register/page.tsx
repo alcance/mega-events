@@ -1,11 +1,13 @@
-// app/register/page.tsx
+// app/auth/register/page.tsx - REPLACE with your original design + role system
 'use client';
 
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { supabase } from '@/lib/supabase';
+import { useAuth } from '@/lib/auth';
 import { generateBarcodeNumber } from '@/lib/barcode';
+import AuthDebug from '@/components/AuthDebug';
+import DebugSignup from '@/components/DebugSignup';
 
 export default function RegisterPage() {
   const [fullName, setFullName] = useState('');
@@ -15,6 +17,7 @@ export default function RegisterPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   
+  const { signUp } = useAuth();
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -30,49 +33,13 @@ export default function RegisterPage() {
     }
     
     try {
-      // Generate a unique barcode for the user
-      const barcode = generateBarcodeNumber();
+      const { error } = await signUp(email, fullName, ticketType, quantity);
       
-      // Generate a random password since Supabase requires one
-      const randomPassword = Math.random().toString(36).substring(2, 15) + 
-                           Math.random().toString(36).substring(2, 15);
-      
-      // Register the user with Supabase auth
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password: randomPassword, // Use random password that user doesn't need to know
-        options: {
-          data: {
-            full_name: fullName,
-            ticket_type: ticketType,
-            ticket_quantity: quantity,
-            barcode: barcode // Include the barcode in user metadata
-          }
-        }
-      });
-
       if (error) {
         setErrorMessage(error.message);
-      } else if (data?.user) {
-        // Create or update the profile with the barcode
-        const { error: profileError } = await supabase
-          .from('profiles')
-          .upsert({
-            id: data.user.id,
-            full_name: fullName,
-            username: email.split('@')[0], // Generate a simple username
-            ticket_type: ticketType,
-            ticket_quantity: quantity,
-            barcode: barcode,
-            updated_at: new Date().toISOString()
-          });
-          
-        if (profileError) {
-          console.error('Error updating profile:', profileError);
-        }
-        
-        // Success - redirect to dashboard selection page
-        router.push('/');
+      } else {
+        // Success - redirect to confirmation page
+        router.push('/auth/confirmation');
       }
     } catch (error) {
       setErrorMessage('An unexpected error occurred');
@@ -118,7 +85,7 @@ export default function RegisterPage() {
               {errorMessage}
             </div>
           )}
-
+          <AuthDebug />
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-sm font-medium mb-1">Full Name</label>
@@ -154,9 +121,11 @@ export default function RegisterPage() {
                   required
                 >
                   <option value="" disabled>Choose Ticket Type</option>
-                  <option value="standard">Standard</option>
-                  <option value="vip">VIP</option>
-                  <option value="premium">Premium</option>
+                  <option value="standard">Standard - General Attendee</option>
+                  <option value="vip">VIP - Premium Attendee</option>
+                  <option value="premium">Premium - Speaker Access</option>
+                  <option value="exhibitor">Exhibitor - Booth Package</option>
+                  <option value="admin">Admin - Staff Access</option>
                 </select>
                 <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                   <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -194,6 +163,7 @@ export default function RegisterPage() {
               {isLoading ? 'PROCESSING...' : 'REGISTER & CONTINUE'}
             </button>
           </form>
+          <DebugSignup />
         </div>
       </div>
     </div>
