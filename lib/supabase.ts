@@ -23,6 +23,6 @@ supabase.auth.getSession().then(({ data, error }) => {
   if (error) {
     console.error('❌ Supabase connection failed:', error)
   } else {
-    console.log('✅ Supabase connection successful')
+    console.log('✅ Supabase connection successful', data)
   }
 })

@@ -163,7 +163,7 @@ export default function ConfirmationPage() {
               <div>
                 <p className="font-medium text-blue-800">Confirmation Email Sent</p>
                 <p className="text-sm text-blue-700 mt-1">
-                  We've sent your ticket and event details to:
+                  We&apos;ve sent your ticket and event details to:
                 </p>
                 <p className="font-medium text-blue-900 mt-1">
                   {state.userData.email}

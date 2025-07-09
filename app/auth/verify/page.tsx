@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 
-export default function VerifyPage() {
+// Separate the component that uses useSearchParams
+function VerifyContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(true);
@@ -69,11 +69,16 @@ export default function VerifyPage() {
 
     setIsLoading(true);
     try {
+      // Fix: Use environment variable or hardcode your domain
+      const redirectUrl = process.env.NEXT_PUBLIC_SITE_URL 
+        ? `${process.env.NEXT_PUBLIC_SITE_URL}/auth/verify`
+        : `${typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000'}/auth/verify`;
+
       const { error } = await supabase.auth.resend({
         type: 'signup',
         email: email,
         options: {
-          emailRedirectTo: `${window.location.origin}/auth/verify`
+          emailRedirectTo: redirectUrl
         }
       });
 
@@ -81,136 +86,93 @@ export default function VerifyPage() {
         setMessage(`Failed to resend verification: ${error.message}`);
       } else {
         setMessage('Verification email sent! Please check your inbox.');
-        setCanResend(false);
       }
     } catch (error) {
-      setMessage('An error occurred while sending verification email');
       console.error('Resend error:', error);
+      setMessage('An error occurred while resending the verification email.');
     } finally {
       setIsLoading(false);
     }
   };
 
-  const getStatusIcon = () => {
-    switch (verificationStatus) {
-      case 'success':
-        return (
-          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
-            <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-            </svg>
-          </div>
-        );
-      case 'error':
-        return (
-          <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-4">
-            <svg className="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </div>
-        );
-      case 'loading':
-      default:
-        return (
-          <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-          </div>
-        );
-    }
-  };
-
   return (
-    <div className="flex h-screen bg-white text-black">
-      {/* Left side with the background image */}
-      <div className="hidden md:block md:w-1/2 relative">
-        <Image 
-          src="/general-background.svg" 
-          alt="Event Background" 
-          fill 
-          style={{objectFit: 'cover'}}
-          priority
-        />
+    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md">
+        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+          Verify Your Email
+        </h2>
       </div>
 
-      {/* Right side with verification content */}
-      <div className="w-full md:w-1/2 flex items-center justify-center p-4">
-        <div className="w-full max-w-md">
-          <div className="flex justify-center mb-6">
-            <Image 
-              src="/main-logo.svg" 
-              alt="Logo" 
-              width={80} 
-              height={80}
-            />
-          </div>
-
-          <div className="text-center">
-            {getStatusIcon()}
-
-            <h1 className="text-2xl font-bold mb-4">
-              {verificationStatus === 'loading' && 'Verifying Email...'}
-              {verificationStatus === 'success' && 'Email Verified!'}
-              {verificationStatus === 'error' && 'Verification Required'}
-            </h1>
-
-            <p className="text-gray-600 mb-6">
-              {message}
-            </p>
-
-            {canResend && (
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium mb-1">Email Address</label>
-                  <input 
-                    type="email" 
-                    placeholder="Enter your email address" 
-                    className="w-full p-3 bg-gray-50 rounded-md border border-gray-200"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+          {isLoading ? (
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+              <p className="mt-4 text-gray-600">Processing verification...</p>
+            </div>
+          ) : (
+            <div className="text-center">
+              {verificationStatus === 'success' ? (
+                <div className="text-green-600">
+                  <p className="text-lg font-semibold">✓ {message}</p>
+                  <p className="text-sm text-gray-600 mt-2">Redirecting to dashboard...</p>
                 </div>
-
-                <button 
-                  onClick={handleResendVerification}
-                  disabled={isLoading || !email}
-                  className="w-full p-3 bg-[#F94F4F] text-white rounded-lg font-medium hover:bg-red-600 transition-colors disabled:opacity-50"
-                >
-                  {isLoading ? 'Sending...' : 'Resend Verification Email'}
-                </button>
-              </div>
-            )}
-
-            {verificationStatus === 'success' && (
-              <div className="bg-green-50 border border-green-200 rounded-lg p-4 mt-4">
-                <p className="text-green-800 text-sm">
-                  Redirecting to your dashboard...
-                </p>
-              </div>
-            )}
-
-            <div className="mt-8 space-y-3">
-              <button 
-                onClick={() => router.push('/auth/register')}
-                className="w-full p-3 border border-gray-300 text-black rounded-lg font-medium hover:bg-gray-100 transition-colors"
-              >
-                Register for Event
-              </button>
-              
-              <button 
-                onClick={() => router.push('/')}
-                className="w-full p-3 text-gray-600 rounded-lg font-medium hover:bg-gray-100 transition-colors"
-              >
-                Back to Home
-              </button>
+              ) : (
+                <div>
+                  <p className="text-red-600 mb-4">{message}</p>
+                  {canResend && (
+                    <div className="space-y-4">
+                      <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Enter your email"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                      <button
+                        onClick={handleResendVerification}
+                        className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      >
+                        Resend Verification Email
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
 
-            <div className="mt-6 text-center text-sm text-gray-500">
-              <p>Need help? Contact us at:</p>
-              <p className="text-gray-600">support@megaevents.com</p>
-            </div>
+// Loading fallback component
+function VerifyLoading() {
+  return (
+    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md">
+        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+          Verify Your Email
+        </h2>
+      </div>
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+            <p className="mt-4 text-gray-600">Loading verification...</p>
           </div>
         </div>
       </div>
     </div>
+  );
+}
+
+// Main page component with Suspense wrapper
+export default function VerifyPage() {
+  return (
+    <Suspense fallback={<VerifyLoading />}>
+      <VerifyContent />
+    </Suspense>
   );
 }

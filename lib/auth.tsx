@@ -6,7 +6,6 @@ import { supabase } from './supabase';
 import { useRouter } from 'next/navigation';
 import type { Session, AuthError, AuthChangeEvent } from '@supabase/supabase-js';
 import { CustomUser, UserRole } from './types';
-import { generateBarcodeNumber } from './barcode';
 
 interface AuthContextType {
   user: CustomUser | null;
@@ -79,9 +78,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signUp = async (
     email: string,
-    fullName: string,
-    ticketType: string,
-    quantity: number
+    // fullName: string,
+    // ticketType: string,
+    // quantity: number
   ): Promise<{ error: AuthError | null }> => {
     try {
       setIsLoading(true);
